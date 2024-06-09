@@ -10,6 +10,7 @@ app.use(express.json());
 const PORT = process.env.PORT || 5000;
 const WEBHOOKS_FILE = path.join(__dirname, process.env.WEBHOOKS_FILE || 'webhooks.json');
 const CALLBACK = process.env.CALLBACK_URL || 'https://webhook.site/default';
+const HOST = process.env.HOST || 'http://localhost';
 
 // ฟังก์ชันสำหรับอ่านข้อมูล webhooks จากไฟล์
 async function readWebhooks() {
@@ -48,7 +49,7 @@ async function readWebhooks() {
     data.webhooks[page_id] = { createdAt: new Date().toISOString() };
     await writeWebhooks(data.webhooks);
   
-    res.status(201).json({ status: 'success', message: 'Webhook added', url: `http://localhost:${PORT}/${page_id}/webhook/` });
+    res.status(201).json({ status: 'success', message: 'Webhook added', url: `${HOST}:${PORT}/${page_id}/webhook/` });
   }
 
 // ฟังก์ชันสำหรับเขียนข้อมูล webhooks ลงไฟล์
