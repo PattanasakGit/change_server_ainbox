@@ -49,7 +49,7 @@ async function readWebhooks() {
     data.webhooks[page_id] = { createdAt: new Date().toISOString() };
     await writeWebhooks(data.webhooks);
   
-    res.status(201).json({ status: 'success', message: 'Webhook added', url: `${HOST}:${PORT}/${page_id}/webhook/` });
+    res.status(201).json({ status: 'success', message: 'Webhook added', url: `${HOST}/${page_id}/webhook/` });
   }
 
 // ฟังก์ชันสำหรับเขียนข้อมูล webhooks ลงไฟล์
@@ -68,6 +68,14 @@ async function sendCallback(data, url) {
     return response.data;
   } catch (error) {
     console.error('Error sending callback:', error.message);
+    if (error.response) {
+      console.error('Response data:', error.response.data);
+      console.error('Response status:', error.response.status);
+    } else if (error.request) {
+      console.error('No response received');
+    } else {
+      console.error('Error setting up request:', error.message);
+    }
     throw error;
   }
 }
